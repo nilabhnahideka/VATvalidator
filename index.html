@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VAT ID Checker</title>
+</head>
+<body>
+    <h2>VAT ID Checker</h2>
+    <form id="vatForm">
+        <label for="vatId">VAT ID (CountryCodeVATNumber):</label>
+        <input type="text" id="vatId" name="vatId" required>
+        <button type="submit">Check</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('vatForm').addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const vatId = document.getElementById('vatId').value;
+            const countryCode = vatId.slice(0, 2);
+            const vatNumber = vatId.slice(2);
+
+            const response = await fetch('https://your-app-name.herokuapp.com/check-vat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ countryCode, vatNumber })
+            });
+            const result = await response.json();
+            if (result.valid) {
+                document.getElementById('result').innerText = 'Valid VAT ID';
+            } else {
+                document.getElementById('result').innerText = 'Invalid VAT ID';
+            }
+        });
+    </script>
+</body>
+</html>
