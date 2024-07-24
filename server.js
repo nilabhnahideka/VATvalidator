@@ -5,7 +5,11 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+
+// Serve the index.html file from the root directory
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 app.post('/check-vat', async (req, res) => {
     const { countryCode, vatNumber } = req.body;
